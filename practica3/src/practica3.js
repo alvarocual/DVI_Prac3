@@ -4,29 +4,27 @@ var Q = window.Q = Quintus()
 	.setup({ width: 320, height: 480 })
 	.controls().touch()
 
-	Q.loadTMX("level.tmx", function() {
-		Q.stageScene("level1");
-	});
-
 	Q.scene("level1", function(stage) {
 		Q.stageTMX("level.tmx", stage);
 		var mario = stage.insert(new Q.Mario());
-		stage.add("viewport").follow(mario);
+		stage.add("viewport").follow(player);
 	});
 
 	Q.Sprite.extend("Mario", {
 		init: function(p) {
-			this.add("2d, platformerControls")
 			this._super({
 				sheet: "marioR",
+				frame: 0,
 				x: 150,
 				y: 380
 			});
-		}
+			
+			this.add("2d, platformerControls");
+		};
 	});
-
-	Q.load("mario_small.png, mario_small.json", function() {
-		Q.compileSheet("mario_small.png", "mario_small.json")
+	
+	Q.loadTMX("level.tmx", "mario_small.png, mario_small.json", function() {
+		Q.stageScene("level1");
+		Q.compileSheets("mario_small.png", "mario_small.json");
 	});
-
-}
+};
